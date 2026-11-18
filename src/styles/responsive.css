@@ -1,0 +1,58 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * LUXURY RESPONSIVE & ADAPTIVE STYLING
+ * Breakpoints: Mobile (<= 640px), Tablet (641px - 1024px), Desktop (> 1024px)
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+@media (max-width: 1024px) {
+  .hero-grid-luxury {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .skills-grid-luxury {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .projects-grid-luxury {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  /* Restore native cursor for touch screens */
+  body {
+    cursor: auto !important;
+  }
+
+  .skills-grid-luxury {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-grid-luxury {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-primary-luxury,
+  .btn-secondary-luxury {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+  }
+
+  .portrait-frame-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title-responsive {
+    font-size: 2.25rem;
+    line-height: 1.15;
+  }
+
+  .hero-metrics-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

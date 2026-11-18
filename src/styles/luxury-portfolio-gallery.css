@@ -1,0 +1,116 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * LUXURY PORTFOLIO GALLERY & FILTER STYLESHEET
+ * High-end gallery presentation, card overlays, tech stack chips, and links
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+.gallery-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.gallery-card-luxury {
+  position: relative;
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(214, 194, 154, 0.18);
+  border-radius: 20px;
+  padding: 2.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.gallery-card-luxury:hover {
+  transform: translateY(-8px);
+  border-color: rgba(214, 194, 154, 0.55);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(214, 194, 154, 0.16);
+}
+
+.gallery-badge-category {
+  display: inline-block;
+  font-family: var(--font-mono-luxury);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #D6C29A;
+  background: rgba(214, 194, 154, 0.08);
+  border: 1px solid rgba(214, 194, 154, 0.2);
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.gallery-card-heading {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-size: 1.625rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.gallery-card-luxury:hover .gallery-card-heading {
+  color: #F1E4C8;
+}
+
+.gallery-card-description {
+  font-size: 0.875rem;
+  color: #A3A3A3;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.gallery-tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.gallery-tech-pill {
+  font-family: var(--font-mono-luxury);
+  font-size: 0.6875rem;
+  background: rgba(24, 24, 24, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #F1E4C8;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+.gallery-card-luxury:hover .gallery-tech-pill {
+  border-color: rgba(214, 194, 154, 0.3);
+}
+
+.gallery-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gallery-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.gallery-action-link:hover {
+  color: #D6C29A;
+}

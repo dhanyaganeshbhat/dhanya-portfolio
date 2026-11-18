@@ -1,0 +1,104 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * LUXURY FORMS & INTERACTIVE INPUT CONTROLS STYLESHEET
+ * High-end form styling, floating labels, champagne outlines, and feedback
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+.luxury-form-container {
+  position: relative;
+  width: 100%;
+  border-radius: 24px;
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(214, 194, 154, 0.22);
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.form-group-luxury {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-label-luxury {
+  display: block;
+  font-family: var(--font-mono-luxury);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #D6C29A;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-input-luxury {
+  width: 100%;
+  background: rgba(22, 22, 22, 0.85);
+  border: 1px solid rgba(214, 194, 154, 0.2);
+  border-radius: 12px;
+  padding: 0.95rem 1.25rem;
+  font-size: 0.875rem;
+  font-family: var(--font-inter), sans-serif;
+  color: #FFFFFF;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.form-input-luxury:hover {
+  border-color: rgba(214, 194, 154, 0.35);
+  background: rgba(26, 26, 26, 0.9);
+}
+
+.form-input-luxury:focus {
+  background: rgba(30, 30, 30, 0.98);
+  border-color: #D6C29A;
+  box-shadow: 0 0 20px rgba(214, 194, 154, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.form-textarea-luxury {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.form-submit-button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #F1E4C8 0%, #D6C29A 50%, #B89A6A 100%);
+  color: #080808;
+  font-family: var(--font-mono-luxury);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 25px rgba(214, 194, 154, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 35px rgba(214, 194, 154, 0.45);
+}
+
+.form-notice-box {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  background: rgba(14, 14, 14, 0.8);
+  border: 1px solid rgba(214, 194, 154, 0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #A3A3A3;
+  line-height: 1.5;
+}

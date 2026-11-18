@@ -1,0 +1,96 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * LUXURY VISUAL EFFECTS, SPOTLIGHTS & NOISE SHADERS
+ * Subtle golden atmospheric reflections, glowing gradients and halo rings
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+.spotlight-golden-hero {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(
+    circle,
+    rgba(214, 194, 154, 0.09) 0%,
+    rgba(241, 228, 200, 0.03) 45%,
+    transparent 70%
+  );
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spotlight-golden-secondary {
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(214, 194, 154, 0.06) 0%,
+    transparent 65%
+  );
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-light-beam-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 18rem;
+  background: linear-gradient(
+    180deg,
+    rgba(214, 194, 154, 0.08) 0%,
+    rgba(214, 194, 154, 0.02) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Subtle Champagne Border Glow Hover Utility */
+.glow-on-hover {
+  position: relative;
+}
+
+.glow-on-hover::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(214, 194, 154, 0.5), transparent, rgba(241, 228, 200, 0.3));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.glow-on-hover:hover::after {
+  opacity: 1;
+}
+
+/* Luxury Monogram Badge */
+.monogram-badge-dgb {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(214, 194, 154, 0.35);
+  background: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.monogram-badge-dgb:hover {
+  border-color: #D6C29A;
+  box-shadow: 0 0 25px rgba(214, 194, 154, 0.35);
+  transform: scale(1.05);
+}

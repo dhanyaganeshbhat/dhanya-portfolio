@@ -1,0 +1,83 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * LUXURY TIMELINE & MILESTONE STYLESHEET
+ * Elegant academic chronology for Bangalore Institute of Technology education
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+.timeline-chronology-container {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.timeline-chronology-entry {
+  position: relative;
+  padding-left: 3rem;
+  padding-bottom: 2.5rem;
+}
+
+.timeline-chronology-entry:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-chronology-track {
+  position: absolute;
+  left: 0.95rem;
+  top: 0.5rem;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    #D6C29A 0%,
+    rgba(214, 194, 154, 0.4) 50%,
+    rgba(214, 194, 154, 0.05) 100%
+  );
+}
+
+.timeline-chronology-bullet {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.35rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background: #080808;
+  border: 2px solid #D6C29A;
+  box-shadow: 0 0 14px rgba(214, 194, 154, 0.6);
+  z-index: 2;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.timeline-chronology-entry:hover .timeline-chronology-bullet {
+  transform: scale(1.25);
+  background: #D6C29A;
+}
+
+.timeline-card-content {
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(214, 194, 154, 0.18);
+  border-radius: 18px;
+  padding: 1.75rem 2rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-card-content:hover {
+  border-color: rgba(214, 194, 154, 0.45);
+  transform: translateX(4px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(214, 194, 154, 0.1);
+}
+
+.timeline-period-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono-luxury);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid rgba(214, 194, 154, 0.25);
+  color: #F1E4C8;
+}

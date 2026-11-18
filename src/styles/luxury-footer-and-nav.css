@@ -1,0 +1,116 @@
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * LUXURY HEADER, NAVBAR & FOOTER PRESENTATION STYLESHEET
+ * High-definition desktop navigation, responsive mobile menu & footer layout
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+
+.luxury-header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-header-scrolled {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background: rgba(8, 8, 8, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(214, 194, 154, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.luxury-nav-link {
+  position: relative;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-mono-luxury);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(214, 194, 154, 0.75);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  border-radius: 9999px;
+}
+
+.luxury-nav-link:hover {
+  color: #FFFFFF;
+}
+
+.luxury-nav-link.active {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(214, 194, 154, 0.3);
+}
+
+.luxury-footer-wrapper {
+  position: relative;
+  background-color: #080808;
+  border-top: 1px solid rgba(214, 194, 154, 0.15);
+  padding-top: 4.5rem;
+  padding-bottom: 2.5rem;
+  color: #A3A3A3;
+}
+
+.luxury-footer-beam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 66.666667%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(214, 194, 154, 0.45) 50%,
+    transparent 100%
+  );
+}
+
+.luxury-footer-col-title {
+  font-family: var(--font-mono-luxury);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #F1E4C8;
+  margin-bottom: 1.25rem;
+}
+
+.luxury-footer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #A3A3A3;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.luxury-footer-link:hover {
+  color: #D6C29A;
+}
+
+.back-to-top-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono-luxury);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(214, 194, 154, 0.8);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.back-to-top-button:hover {
+  color: #D6C29A;
+}
