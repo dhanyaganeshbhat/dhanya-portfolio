@@ -39,7 +39,7 @@ export default function VisitorAnalyticsBadge() {
 
     trackVisitorSession().then((data) => {
       if (!isCancelled) {
-        setMetrics(data);
+        setMetrics(data as VisitorMetrics);
       }
     });
 
