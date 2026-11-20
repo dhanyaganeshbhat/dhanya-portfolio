@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Mail, ArrowUp, Github, Linkedin, MapPin, Heart } from "lucide-react";
+import VisitorAnalyticsBadge from "@/components/VisitorAnalyticsBadge";
 
 export default function Footer() {
   return (
@@ -100,6 +101,14 @@ export default function Footer() {
             </div>
           </div>
 
+        </div>
+
+        {/* Live Visitor Analytics Row */}
+        <div className="py-6 border-b border-[#242424] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <VisitorAnalyticsBadge />
+          <p className="text-[11px] font-mono text-neutral-500">
+            Real-time telemetry tracking · Bangalore Institute of Technology
+          </p>
         </div>
 
         {/* Bottom bar */}

@@ -20,6 +20,7 @@
 @import '../styles/luxury-footer-and-nav.css';
 @import '../styles/luxury-glass-cards.css';
 @import '../styles/luxury-micro-interactions.css';
+@import '../styles/luxury-visitor-analytics.css';
 
 :root {
   --font-cormorant: 'Cormorant Garamond', Georgia, serif;
