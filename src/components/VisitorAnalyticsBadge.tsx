@@ -7,25 +7,27 @@ import {
 } from "@/scripts/visitorAnalytics";
 import {
   Eye,
-  Activity,
   Users,
-  Compass,
   Laptop,
   CheckCircle2,
   X,
   Sparkles,
   BarChart3,
+  ShieldCheck,
+  Fingerprint,
 } from "lucide-react";
 
 interface VisitorMetrics {
   visitorId: string;
   isNewVisitor: boolean;
+  uniqueVisitors: number;
   totalVisitors: number;
   pageViews: number;
   visitCount: number;
   deviceType: string;
   firstVisitDate: string;
   sessionStarted: number;
+  deDuplicationActive: boolean;
 }
 
 export default function VisitorAnalyticsBadge() {
@@ -52,19 +54,19 @@ export default function VisitorAnalyticsBadge() {
     return (
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#D6C29A]/20 bg-[#121212] text-neutral-500 font-mono text-[11px]">
         <span className="w-1.5 h-1.5 rounded-full bg-[#D6C29A]/50 animate-pulse" />
-        <span>Syncing visitor telemetry...</span>
+        <span>Syncing unique visitor telemetry...</span>
       </div>
     );
   }
 
   return (
     <div className="relative inline-block text-left">
-      {/* ── INTERACTIVE VISITOR COUNTER PILL ───────────────────────────── */}
+      {/* ── INTERACTIVE UNIQUE VISITOR COUNTER PILL ───────────────────── */}
       <button
         onClick={() => setExpanded(!expanded)}
         data-hover
         className="visitor-badge-trigger group"
-        aria-label="View live visitor analytics"
+        aria-label="View unique visitor analytics"
       >
         {/* Pulsing Radar Dot */}
         <span className="visitor-radar-wrapper">
@@ -72,20 +74,20 @@ export default function VisitorAnalyticsBadge() {
           <span className="visitor-radar-solid" />
         </span>
 
-        {/* Counter & Label */}
+        {/* Counter & Label: Strictly Unique Visitors */}
         <div className="flex items-center gap-2">
-          <span className="visitor-label-tag">Live Visitors:</span>
+          <span className="visitor-label-tag">Unique Visitors:</span>
           <span className="visitor-counter-digits">
-            {formatVisitorCount(metrics.totalVisitors)}
+            {formatVisitorCount(metrics.uniqueVisitors)}
           </span>
         </div>
 
-        {/* New Visitor Badge Indicator */}
+        {/* New Visitor / Returning Badge */}
         {metrics.isNewVisitor ? (
-          <span className="visitor-new-pill">● New Visitor</span>
+          <span className="visitor-new-pill">● New Unique Visitor</span>
         ) : (
           <span className="visitor-new-pill text-[#D6C29A]">
-            Visit #{metrics.visitCount}
+            Returning (Visit #{metrics.visitCount})
           </span>
         )}
 
@@ -102,7 +104,7 @@ export default function VisitorAnalyticsBadge() {
             <div className="flex items-center gap-2">
               <Sparkles size={16} className="text-[#D6C29A]" />
               <h5 className="font-serif text-lg text-white font-medium">
-                Visitor Telemetry
+                Unique Visitor Telemetry
               </h5>
             </div>
             <button
@@ -119,12 +121,12 @@ export default function VisitorAnalyticsBadge() {
             <div className="visitor-stat-tile">
               <div className="flex items-center justify-between text-neutral-400 mb-1">
                 <Users size={14} className="text-[#D6C29A]" />
-                <span className="text-[10px] font-mono text-[#D6C29A]">GLOBAL</span>
+                <span className="text-[10px] font-mono text-[#D6C29A]">UNIQUE</span>
               </div>
               <p className="visitor-stat-num">
-                {formatVisitorCount(metrics.totalVisitors)}
+                {formatVisitorCount(metrics.uniqueVisitors)}
               </p>
-              <p className="visitor-stat-title">Total Visitors</p>
+              <p className="visitor-stat-title">Unique Visitors</p>
             </div>
 
             <div className="visitor-stat-tile">
@@ -137,14 +139,27 @@ export default function VisitorAnalyticsBadge() {
             </div>
           </div>
 
+          {/* Strict De-Duplication Verification Banner */}
+          <div className="mb-3 p-2.5 rounded-xl border border-[#D6C29A]/25 bg-[#141414] flex items-center gap-2 text-[11px] text-[#F1E4C8]">
+            <ShieldCheck size={16} className="text-[#D6C29A] shrink-0" />
+            <span className="leading-snug">
+              <strong>Strict De-Duplication:</strong> Only 1 count per unique device/visitor. Refreshes & repeat sessions are not counted again.
+            </span>
+          </div>
+
           {/* Detailed Session Breakdown */}
-          <div className="space-y-1.5 pt-2 border-t border-[#242424]">
+          <div className="space-y-1.5 pt-1 border-t border-[#242424]">
             <div className="visitor-info-row">
               <span>Visitor Status</span>
               <span className="flex items-center gap-1 text-[#F1E4C8]">
                 <CheckCircle2 size={12} className="text-[#D6C29A]" />
-                {metrics.isNewVisitor ? "New Unique Visitor" : "Returning Visitor"}
+                {metrics.isNewVisitor ? "First-time Unique Visitor" : "Returning Visitor"}
               </span>
+            </div>
+
+            <div className="visitor-info-row">
+              <span>Personal Visits</span>
+              <span className="font-mono text-[#F1E4C8]">{metrics.visitCount} visits recorded</span>
             </div>
 
             <div className="visitor-info-row">
@@ -161,7 +176,10 @@ export default function VisitorAnalyticsBadge() {
             </div>
 
             <div className="visitor-info-row">
-              <span>Anonymous ID</span>
+              <span className="flex items-center gap-1">
+                <Fingerprint size={12} className="text-[#D6C29A]" />
+                Unique ID
+              </span>
               <span className="font-mono text-[10px] truncate max-w-[150px]">
                 {metrics.visitorId}
               </span>
@@ -171,7 +189,7 @@ export default function VisitorAnalyticsBadge() {
           <div className="mt-4 pt-3 border-t border-[#242424] text-[10px] font-mono text-neutral-500 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#D6C29A]" />
-              Privacy-first · No cookies used
+              Privacy-first · Unique De-dup Active
             </span>
             <span className="text-[#D6C29A]/80">BIT Bengaluru</span>
           </div>

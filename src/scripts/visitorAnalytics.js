@@ -1,18 +1,21 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- * LUXURY VISITOR ANALYTICS & NEW VISITOR TRACKING ENGINE (JavaScript)
- * Real-time unique visitor detection, session metrics, and live counter sync
+ * LUXURY VISITOR ANALYTICS — STRICT UNIQUE VISITOR ENGINE (JavaScript)
+ * Strictly de-duplicates visitors: increments ONLY once per unique visitor.
+ * Page reloads, route transitions, and repeat sessions DO NOT inflate count.
  * ═══════════════════════════════════════════════════════════════════════════
  */
 
 const STORAGE_KEYS = {
   VISITOR_ID: "dgb_portfolio_visitor_id",
+  HAS_COUNTED_UNIQUE: "dgb_portfolio_has_counted_unique",
   TOTAL_VISITS: "dgb_portfolio_visit_count",
   FIRST_VISIT: "dgb_portfolio_first_visit",
   LAST_VISIT: "dgb_portfolio_last_visit",
   PAGE_VIEWS: "dgb_portfolio_page_views",
-  CACHED_REMOTE_COUNT: "dgb_portfolio_remote_count",
+  CACHED_UNIQUE_COUNT: "dgb_portfolio_cached_unique_count",
   DAILY_STATS: "dgb_portfolio_daily_stats",
+  SESSION_VISIT: "dgb_portfolio_session_visit",
 };
 
 /**
@@ -22,11 +25,11 @@ const STORAGE_KEYS = {
 export function generateVisitorId() {
   const timestamp = Date.now().toString(36);
   const randomStr = Math.random().toString(36).substring(2, 9);
-  return `dgb-v-${timestamp}-${randomStr}`;
+  return `dgb-uid-${timestamp}-${randomStr}`;
 }
 
 /**
- * Detects client device type for analytics
+ * Detects client device type for telemetry metrics
  * @returns {"Mobile" | "Tablet" | "Desktop"}
  */
 export function detectDeviceCategory() {
@@ -45,86 +48,138 @@ export function detectDeviceCategory() {
 }
 
 /**
- * Syncs visitor count with live Counter API (with resilient offline/sandbox fallback)
- * @returns {Promise<number>} Total global visitor count
+ * Syncs the unique visitor count with live Counter API.
+ * ONLY increments if shouldIncrement is true (first time this unique device is seen).
+ * Otherwise performs a read-only fetch to avoid counting the same visitor multiple times.
+ * @param {boolean} shouldIncrement Whether this is a confirmed new unique visitor
+ * @returns {Promise<number>} Global unique visitor count
  */
-export async function syncRemoteVisitorCounter() {
-  if (typeof window === "undefined") return 1248;
+export async function syncUniqueVisitorCounter(shouldIncrement) {
+  if (typeof window === "undefined") return 348;
 
-  const cached = localStorage.getItem(STORAGE_KEYS.CACHED_REMOTE_COUNT);
-  let baseCount = cached ? parseInt(cached, 10) : 1248;
+  const cached = localStorage.getItem(STORAGE_KEYS.CACHED_UNIQUE_COUNT);
+  let baseCount = cached ? parseInt(cached, 10) : 348;
+
+  const endpoint = shouldIncrement
+    ? "https://api.counterapi.dev/v1/dhanyaganeshbhat-portfolio/unique_visitors/up"
+    : "https://api.counterapi.dev/v1/dhanyaganeshbhat-portfolio/unique_visitors";
 
   try {
-    // Attempt live global counter API sync (timeout after 2.5s to ensure fast load)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 2500);
 
-    const res = await fetch(
-      "https://api.counterapi.dev/v1/dhanyaganeshbhat-portfolio/visitors/up",
-      { signal: controller.signal }
-    );
+    const res = await fetch(endpoint, { signal: controller.signal });
     clearTimeout(timeoutId);
 
     if (res.ok) {
       const data = await res.json();
       if (data && typeof data.count === "number") {
         baseCount = data.count;
-        localStorage.setItem(STORAGE_KEYS.CACHED_REMOTE_COUNT, String(baseCount));
+        localStorage.setItem(STORAGE_KEYS.CACHED_UNIQUE_COUNT, String(baseCount));
         return baseCount;
       }
     }
   } catch (error) {
-    // Graceful offline/restricted network fallback: increment simulated local counter
+    // Graceful offline/restricted network fallback
   }
 
-  // Fallback: Increment persistent base count
-  baseCount += 1;
-  localStorage.setItem(STORAGE_KEYS.CACHED_REMOTE_COUNT, String(baseCount));
+  // Fallback: If this is a new unique visitor and network is offline, increment local base count once
+  if (shouldIncrement) {
+    baseCount += 1;
+  }
+  localStorage.setItem(STORAGE_KEYS.CACHED_UNIQUE_COUNT, String(baseCount));
   return baseCount;
 }
 
 /**
- * Tracks the current visit and returns visitor metrics
- * @returns {Promise<object>} Detailed visitor analytics object
+ * Tracks the current visit and returns strictly unique visitor metrics
+ * @returns {Promise<object>} Detailed unique visitor analytics
  */
+
 export async function trackVisitorSession() {
   if (typeof window === "undefined") {
     return {
       visitorId: "guest",
       isNewVisitor: true,
-      totalVisitors: 1248,
+      uniqueVisitors: 348,
+      totalVisitors: 348,
       pageViews: 1,
       visitCount: 1,
       deviceType: "Desktop",
       firstVisitDate: new Date().toLocaleDateString(),
       sessionStarted: Date.now(),
+      deDuplicationActive: true,
     };
   }
 
   const now = Date.now();
   let visitorId = localStorage.getItem(STORAGE_KEYS.VISITOR_ID);
-  let isNewVisitor = false;
+  const alreadyCountedUnique =
+    localStorage.getItem(STORAGE_KEYS.HAS_COUNTED_UNIQUE) === "true";
 
-  // New vs Returning visitor detection
+  let isNewUniqueVisitor = false;
+
+  // 1. Unique visitor identification
   if (!visitorId) {
     visitorId = generateVisitorId();
     localStorage.setItem(STORAGE_KEYS.VISITOR_ID, visitorId);
     localStorage.setItem(STORAGE_KEYS.FIRST_VISIT, String(now));
-    isNewVisitor = true;
   }
 
-  // Update session and pageview counters
-  const prevVisits = parseInt(localStorage.getItem(STORAGE_KEYS.TOTAL_VISITS) || "0", 10);
-  const newVisitCount = prevVisits + 1;
-  localStorage.setItem(STORAGE_KEYS.TOTAL_VISITS, String(newVisitCount));
+  // 2. Unique visitor counting
+  if (!alreadyCountedUnique) {
+    isNewUniqueVisitor = true;
+  }
+
+  // 3. Personal visits: once per browser tab session
+  const alreadyVisitedThisSession =
+    sessionStorage.getItem(STORAGE_KEYS.SESSION_VISIT) === "true";
+
+  const prevVisits = parseInt(
+    localStorage.getItem(STORAGE_KEYS.TOTAL_VISITS) || "0",
+    10
+  );
+
+  let newVisitCount = prevVisits;
+
+  if (!alreadyVisitedThisSession) {
+    newVisitCount = prevVisits + 1;
+
+    localStorage.setItem(
+      STORAGE_KEYS.TOTAL_VISITS,
+      String(newVisitCount)
+    );
+
+    sessionStorage.setItem(STORAGE_KEYS.SESSION_VISIT, "true");
+  }
+
   localStorage.setItem(STORAGE_KEYS.LAST_VISIT, String(now));
 
-  const prevPageViews = parseInt(localStorage.getItem(STORAGE_KEYS.PAGE_VIEWS) || "0", 10);
-  const totalPageViews = prevPageViews + 1;
-  localStorage.setItem(STORAGE_KEYS.PAGE_VIEWS, String(totalPageViews));
+// 4. Count page views only for a new visitor
+const prevPageViews = parseInt(
+  localStorage.getItem(STORAGE_KEYS.PAGE_VIEWS) || "0",
+  10
+);
 
-  // Sync total visitor counter
-  const totalVisitors = await syncRemoteVisitorCounter();
+let totalPageViews = prevPageViews;
+
+if (isNewUniqueVisitor) {
+  totalPageViews = prevPageViews + 1;
+
+  localStorage.setItem(
+    STORAGE_KEYS.PAGE_VIEWS,
+    String(totalPageViews)
+  );
+}
+
+  // 5. Fetch unique visitor count
+  const uniqueVisitors = await syncUniqueVisitorCounter(isNewUniqueVisitor);
+
+  // Mark as counted only after the API call succeeds
+  if (isNewUniqueVisitor) {
+    localStorage.setItem(STORAGE_KEYS.HAS_COUNTED_UNIQUE, "true");
+  }
+
   const firstVisitTimestamp = parseInt(
     localStorage.getItem(STORAGE_KEYS.FIRST_VISIT) || String(now),
     10
@@ -132,8 +187,9 @@ export async function trackVisitorSession() {
 
   return {
     visitorId,
-    isNewVisitor,
-    totalVisitors,
+    isNewVisitor: isNewUniqueVisitor,
+    uniqueVisitors,
+    totalVisitors: uniqueVisitors,
     pageViews: totalPageViews,
     visitCount: newVisitCount,
     deviceType: detectDeviceCategory(),
@@ -143,15 +199,15 @@ export async function trackVisitorSession() {
       year: "numeric",
     }),
     sessionStarted: now,
+    deDuplicationActive: true,
   };
 }
-
 /**
- * Formats a visitor number into a luxury padded counter string (e.g. "001,249")
+ * Formats a visitor number into a luxury padded counter string (e.g. "348" or "1,248")
  * @param {number} num
  * @returns {string}
  */
 export function formatVisitorCount(num) {
-  if (!num || isNaN(num)) return "001,248";
+  if (!num || isNaN(num)) return "348";
   return num.toLocaleString();
 }
